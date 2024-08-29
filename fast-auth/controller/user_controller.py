@@ -1,12 +1,14 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 from models.user_model import RequestUser, ResponseUser
 from service import user_service
-
+from auth import is_valid_token
+from error import JwtTokenExpiredException
 router = APIRouter(prefix="/users", tags=["USER"])
 
-
 @router.get("/")
-async def get_users() -> list[ResponseUser]:
+async def get_users(request: Request) -> list[ResponseUser]:
+    if not is_valid_token(request.headers.get('X-authorization')):
+        raise JwtTokenExpiredException()
     return user_service.get_users()
 
 

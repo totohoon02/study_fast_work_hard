@@ -5,19 +5,19 @@ from error import *
 from auth import encode_token
 
 
-def login(user_name, user_password):
+def login(requset: RequestUser) -> dict:
     user = session.query(User).filter(
-        User.user_name == user_name).first()
+        User.user_name == requset.user_name).first()
 
     if user == None:
         NoSuchUserException()
 
-    if not checkpw(user_password, user.password):
+    if not checkpw(requset.password, user.password):
         WrongPasswordException()
 
-    token = encode_token(user_name)
+    token = encode_token(requset.user_name)
     return {
-        "user_name": user_name,
+        "user_name": requset.user_name,
         "token": token
     }
 

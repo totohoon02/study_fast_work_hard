@@ -10,6 +10,7 @@ def login(request: RequestUser) -> ResponseUser:
     return service.create_user(request)
 
 
-@router.get("/login")
-def login(user_name, user_password):
-    return service.login(user_name, user_password)
+# 로그인은 post로 바디 넣어서
+@router.post("/login")
+def login(request: RequestUser):
+    return service.login(request)

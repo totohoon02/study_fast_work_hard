@@ -14,3 +14,7 @@ class WrongPasswordException(Exception):
 class AlreadyExistUsernameException(Exception):
     def __init__(self, message="Already exist username"):
         raise HTTPException(status_code=403, detail=message)
+
+class JwtTokenExpiredException(Exception):
+    def __init__(self, message="JWT Token Expired"):
+        raise HTTPException(status_code=403, detail=message)
