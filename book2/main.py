@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Body
+from pydantic import BaseModel, Field
 
 app = FastAPI()
 
@@ -16,6 +17,14 @@ class Book:
         self.author = author
         self.desc = desc
         self.rating = rating
+
+
+class BookResquest(BaseModel):
+    id: int
+    title: str = Field(min_length=3)  # 각 필드의 validation
+    author: str
+    desc: str
+    rating: float
 
 
 BOOKS = [
@@ -36,8 +45,9 @@ def all_books():
 
 
 @app.post("/books")
-def add_book(request=Body()):
-    BOOKS.append(request)
+def add_book(request: BookResquest):  # validation
+    new_book = Book(**request.model_dump())
+    BOOKS.append(new_book)
 
 
 if __name__ == "__main__":
