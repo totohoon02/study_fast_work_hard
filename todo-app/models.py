@@ -10,7 +10,7 @@ class Users(Base):
     username = Column(String, unique=True)
     first_name = Column(String)
     last_name = Column(String)
-    hased_password = Column(String)
+    hashed_password = Column(String)
     is_active = Column(Boolean, default=False)
     role = Column(String)
 
@@ -40,3 +40,8 @@ class TodoRequest(BaseModel):
     desc: str = Field(min_length=3, max_length=100)
     priority: int = Field(gt=0, lt=6)
     complete: bool
+
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
