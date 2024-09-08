@@ -1,6 +1,27 @@
 from database import Base
-from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy import Column, ForeignKey, Integer, String, Boolean
 from pydantic import BaseModel, Field
+
+
+class Users(Base):
+    __tablename__ = 'users'
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String, unique=True)
+    username = Column(String, unique=True)
+    first_name = Column(String)
+    last_name = Column(String)
+    hased_password = Column(String)
+    is_active = Column(Boolean, default=False)
+    role = Column(String)
+
+
+class CreateUserRequest(BaseModel):
+    username: str
+    email: str
+    first_name: str
+    last_name: str
+    password: str
+    role: str
 
 
 class Todos(Base):
@@ -11,6 +32,7 @@ class Todos(Base):
     desc = Column(String)
     priority = Column(Integer)
     complete = Column(Boolean, default=False)
+    owner_id = Column(Integer, ForeignKey("users.id"))
 
 
 class TodoRequest(BaseModel):
